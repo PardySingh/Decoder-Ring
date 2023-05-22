@@ -1,20 +1,20 @@
 # Decoder-Ring
 Message Decoder App that enables a user to encode or decode messages using 3 different cipher algorithms detailed below.
 ## Links
-- [Live Demo](https://trevorglascock.github.io/Project_Decoder_Ring_1/)
+- [Live Demo](https://decoder-ring.netlify.app)
 
 # Cipher Screenshots
 ## **Caesar Shift Cipher** 
 
-![Caesar Shift Screenshot](https://raw.githubusercontent.com/TrevorGlascock/Project_Decoder_Ring_1/main/Screenshots/Caesar.png)
+![Caesar Shift Screenshot]
 
 ## **Polybius Square Cipher** 
 
-![Polybius Square Screenshot](https://raw.githubusercontent.com/TrevorGlascock/Project_Decoder_Ring_1/main/Screenshots/Polybius.png)
+![Polybius Square Screenshot]
 
 ## **Substitution Cipher** 
 
-![Caesar Shift Screenshot](https://raw.githubusercontent.com/TrevorGlascock/Project_Decoder_Ring_1/main/Screenshots/Substitution.png)
+![Caesar Shift Screenshot]
 
 ## Technology
 - Built with Node.js
