@@ -1,92 +1,48 @@
 // Please refrain from tampering with the setup code provided here,
 // as the index.html and test files rely on this setup to work properly.
-// Only add code (helper methods, variables, etc.) within the scope
+// Only add code (e.g., helper methods, variables, etc.) within the scope
 // of the anonymous function on line 6
 
 const polybiusModule = (function () {
-  const keys = {
-    alphaKey: _createKey("alpha"),
-    coordKey: _createKey("coord"),
-  };
 
   function polybius(input, encode = true) {
-    try {
-      if (!input.length) throw new Error(`Input cannot be empty!`);
-      return input
-        .split(" ")
-        .map((word) => _iterateWord(word, encode, keys))
-        .join(" ");
-    } catch (error) {
-      return false; 
-    }
-  }
+    //create our polybius square collection
+    const polybiusSquare = {
+      1: { 1: 'a', 2: 'b', 3: 'c', 4: 'd', 5: 'e'},
+      2: { 1: 'f', 2: 'g', 3: 'h', 4: 'i/j', 5: 'k'},
+      3: { 1: 'l', 2: 'm', 3: 'n', 4: 'o', 5: 'p'},
+      4: { 1: 'q', 2: 'r', 3: 's', 4: 't', 5: 'u'},
+      5: { 1: 'v', 2: 'w', 3: 'x', 4: 'y', 5: 'z'},
+    };
 
-
-  function _iterateWord(word, encode, { alphaKey, coordKey }) {
- 
-    if (encode)
-      return word
-        .toLowerCase()
-        .split("")
-        .map((letter) => _mapMatrixTo(letter, alphaKey, coordKey))
-        .join("");
-
-   
-    if (word.length % 2 !== 0)
-      throw new Error(
-        `Polybius coordinates come in pairs.\nIgnoring spaces, you cannot decrypt with an odd numbered total!`
-      ); 
-    let output = "";
-    for (let char = 0; char < word.length; char += 2) {
-      const col = word[char];
-      const row = word[char + 1];
-      const code = `${col}${row}`;
-      output += _mapMatrixTo(code, coordKey, alphaKey);
-    }
-    return output;
-  }
-
- 
-  function _mapMatrixTo(input, fromKey, toKey) {
-    const coordinate = _findCoordinate(input, fromKey); //finds the matching coordinate in the fromKey
-    if (!coordinate) throw new Error(`"${input}" is not a valid input!`); //if we don't find a match in our fromKey, then return false for invalid input
-    const row = coordinate[0]; //row is first element
-    const col = coordinate[1]; //col is second element
-    return toKey[row][col]; //map it out baybee
-  }
-  function _findCoordinate(input, key) {
-    if (input === "i" || input === "j") input = "(i/j)"; 
-    for (let row = 0; row < 5; row++)
-      for (let col = 0; col < 5; col++) {
-        if (key[row][col] === input) return [row, col]; //
+    const message = input.toLowerCase().split(''); //our input -> individual char array
+    const messageNoSpaces = message.filter(nums => nums != ' '); //our array  without spaces
+    if(!encode){ //then we decode
+      let decodeString = '';
+      if(messageNoSpaces.length % 2 != 0) return false; //a copy of our array without spaces to check if there are an odd number of numbers
+      for(let index = 0; index < message.length; index += 2){
+        //[column][row] format
+        if(message[index] === ' '){ //if theres a space in the input add it to our decodeString
+          decodeString += ' ';
+          index--; //reset index a space since our value was a space
+        }else{ decodeString += polybiusSquare[message[index + 1]][message[index]]; } //decode
       }
-    return false; 
-  }
-
-
-  function _createKey(type = "alpha", size = 5) {
-    const grid = [];
-    for (let row = 0; row < size; row++) {
-      const thisRow = [];
-      for (let col = 0; col < size; col++) {
-        type === "alpha"
-          ? thisRow.push(_alphaIndex(row, col, size))
-          : thisRow.push(_coordIndex(row, col));
+      return decodeString;
+    }else{ //else we encode
+      const buildEncryption = [];
+      for(let letter of message){ //for each letter we will find the key/value pair by:
+        if(letter === ' '){ buildEncryption.push(' '); } //keep our spaces
+        for(let c = 1; c < 6; c++){ //cycling each column
+          for(let i = 1; i < 6; i++){ //cycling each row
+            if(polybiusSquare[c][i].includes(letter)){
+              buildEncryption.push(i);
+              buildEncryption.push(c);
+            } 
+          }
+        }
       }
-      grid.push(thisRow);
+      return buildEncryption.join('');
     }
-    return grid;
-  }
-
-  function _alphaIndex(row, col, size) {
-    const number = row * size + col; 
-    let charCode = number + 97; 
-    if (charCode === 105) return "(i/j)"; 
-    const shift = charCode > 105 ? 1 : 0; 
-    return String.fromCharCode(charCode + shift);
-  }
-  function _coordIndex(row, col) {
-    return `${col + 1}${row + 1}`;
   }
 
   return {
