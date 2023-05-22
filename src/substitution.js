@@ -1,44 +1,37 @@
 // Please refrain from tampering with the setup code provided here,
 // as the index.html and test files rely on this setup to work properly.
-// Only add code (helper methods, variables, etc.) within the scope
+// Only add code (e.g., helper methods, variables, etc.) within the scope
 // of the anonymous function on line 6
 
 const substitutionModule = (function () {
-  const alphaKey = "abcdefghijklmnopqrstuvwxyz".split("");
+
   function substitution(input, alphabet, encode = true) {
-    try {
-      _validAlphabet(alphabet);
-      const codeKey = alphabet.toLowerCase().split("");
-      return input
-        .toLowerCase() /
-        .split("") 
-        .map(
-          (word) =>
-            encode
-              ? _mapTo(word, alphaKey, codeKey) 
-              : _mapTo(word, codeKey, alphaKey) 
-        )
-        .join(""); 
-    } catch (error) {
-      return false; 
+    const encryptionKeys = {};
+
+    if(!alphabet || alphabet.length < 26 || alphabet.length > 26) return false;
+    //97 - 122  char codes a-z
+    let charCodeCount = 97;
+
+    for(let c = 0; c <= 25; c++){ //fill our object with normal alphabet keys paired with substitution keys
+      if(Object.values(encryptionKeys).includes(alphabet[c])){ return false; } //if a value in encryptionKeys already exists (is alphabet[c])
+      else{
+        encryptionKeys[String.fromCharCode(charCodeCount)] = alphabet[c]; //set each key to a normal alphabet letter, value to a new alphabet char
+        charCodeCount++;
+      }
     }
-  }
 
+    const buildEncryption = input.toLowerCase().split('');
 
-  function _mapTo(input, fromKey, toKey) {
-    if (input.match(/\s/)) return input; 
-    const index = fromKey.indexOf(input); 
-    if (index === -1)
-      throw new Error(`${input} not found in the provided alphabet!`); 
-    return toKey[index]; 
-  }
-
-  function _validAlphabet(alphabet) {
-    if (alphabet.length !== 26)
-      throw new Error(`Alphabet must be exactly 26 characters long!`);
-
-    if ([...new Set(alphabet)].length !== alphabet.length)
-      throw new Error(`Alphabet cannot contain repeating characters!`);
+    { //encode or decode here
+		  return buildEncryption.map(letter => {  //iterate through each letter in our input
+		  	for(let plainLetter in encryptionKeys){  //iterate through each object in encryptionKeys
+		  		let substitutionLetter = encryptionKeys[plainLetter]; //set our keyvalue to substitutionLetter
+          if(letter == " ") return " "; //keep spaces
+		  		if(encode && letter == plainLetter) return substitutionLetter; //encode - if our input letter = key's string of plain letter, return the value of subsitutionLetter
+          if(!encode && letter == substitutionLetter) return plainLetter; //decode - if our input letter equals a substitution letter, return the plain letter
+      }
+		}).join('');
+    }
   }
 
   return {
