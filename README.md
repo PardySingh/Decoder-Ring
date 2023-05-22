@@ -3,19 +3,6 @@ Message Decoder App that enables a user to encode or decode messages using 3 dif
 ## Links
 - [Live Demo](https://decoder-ring.netlify.app)
 
-# Cipher Screenshots
-## **Caesar Shift Cipher** 
-
-![Caesar Shift Screenshot](https://raw.githubusercontent.com/PardySingh/Project_DecoderRing/main/Caesar.png)
-
-## **Polybius Square Cipher** 
-
-![Polybius Square Screenshot]
-
-## **Substitution Cipher** 
-
-![Caesar Shift Screenshot]
-
 ## Technology
 - Built with Node.js
 - Tested with Mocha & Chai 
