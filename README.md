@@ -10,11 +10,11 @@ Message Decoder App that enables a user to encode or decode messages using 3 dif
 
 ## **Polybius Square Cipher** 
 
-![Polybius Square Screenshot](https://raw.githubusercontent.com/PardySingh/Decoder-Ring/main/Screenshots/Caesar.png)
+![Polybius Square Screenshot](https://raw.githubusercontent.com/PardySingh/Decoder-Ring/main/Screenshots/Polybius.png)
 
 ## **Substitution Cipher** 
 
-![Caesar Shift Screenshot](https://raw.githubusercontent.com/PardySingh/Decoder-Ring/main/Screenshots/Caesar.png)
+![Caesar Shift Screenshot](https://raw.githubusercontent.com/PardySingh/Decoder-Ring/main/Screenshots/Substitution.png)
 
 ## Technology
 - Built with Node.js
